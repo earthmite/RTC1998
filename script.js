@@ -12,17 +12,13 @@ function randomEmoji() {
 const emoji = randomEmoji();
 const name = prompt("What's your name?");
 
-// Generate random chat hash if needed
 if (!location.hash) {
   location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
 }
 const chatHash = location.hash.substring(1);
 
-// TODO: Replace with your own channel ID
-const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
-// Scaledrone room name needs to be prefixed with 'observable-'
+const drone = new ScaleDrone('vfe3gl8ZDcO4dPDG');
 const roomName = 'observable-' + chatHash;
-// Scaledrone room used for signaling
 let room;
 
 const configuration = {
@@ -47,13 +43,12 @@ drone.on('open', error => {
     }
     console.log('Connected to signaling server');
   });
-  // We're connected to the room and received an array of 'members'
-  // connected to the room (including us). Signaling server is ready.
+ 
   room.on('members', members => {
     if (members.length >= 3) {
       return alert('The room is full');
     }
-    // If we are the second user to connect to the room we will be creating the offer
+  
     const isOfferer = members.length === 2;
     startWebRTC(isOfferer);
   });
@@ -71,8 +66,6 @@ function startWebRTC(isOfferer) {
   console.log('Starting WebRTC in as', isOfferer ? 'offerer' : 'waiter');
   pc = new RTCPeerConnection(configuration);
 
-  // 'onicecandidate' notifies us whenever an ICE agent needs to deliver a
-  // message to the other peer through the signaling server
   pc.onicecandidate = event => {
     if (event.candidate) {
       sendSignalingMessage({'candidate': event.candidate});
