@@ -1,3 +1,4 @@
+
 const possibleEmojis = [
   '🐀','🐁','🐭','🐹','🐂','🐃','🐄','🐮','🐅','🐆','🐯','🐇','🐐','🐑','🐏','🐴',
   '🐎','🐱','🐈','🐰','🐓','🐔','🐤','🐣','🐥','🐦','🐧','🐘','🐩','🐕','🐷','🐖',
@@ -185,3 +186,8 @@ form.addEventListener('submit', () => {
 });
 
 insertMessageToDOM({content: 'Chat URL is ' + location.href});
+
+peer.on('connect', () => {
+  console.log('I am connected now')
+  peer.send('sending data blah blah')
+})
